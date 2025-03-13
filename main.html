@@ -38,8 +38,8 @@
 <body>
     <div class="container">
         <div id="player-inputs">
-            <input type="text" id="player-1" placeholder="Enter Player 1 Name">
-            <input type="text" id="player-2" placeholder="Enter Player 2 Name">
+            <input type="text" id="#player1" placeholder="Enter Player 1 Name">
+            <input type="text" id="#player2" placeholder="Enter Player 2 Name">
             <button id="submit">Submit</button>
         </div>
         <div id="game" class="hidden">
@@ -71,8 +71,8 @@
         let boardState = ["", "", "", "", "", "", "", "", ""];
 
         submitButton.addEventListener("click", () => {
-            const player1 = document.getElementById("player-1").value;
-            const player2 = document.getElementById("player-2").value;
+            const player1 = document.getElementById("#player1").value;
+            const player2 = document.getElementById("#player2").value;
             if (player1 && player2) {
                 players = [player1, player2];
                 currentPlayer = 0;
