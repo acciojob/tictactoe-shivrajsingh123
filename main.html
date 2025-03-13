@@ -38,8 +38,8 @@
 <body>
     <div class="container">
         <div id="player-inputs">
-            <input type="text" id="#player1" placeholder="Enter Player 1 Name">
-            <input type="text" id="#player2" placeholder="Enter Player 2 Name">
+            <input type="text" id="player-1" placeholder="Enter Player 1 Name">
+            <input type="text" id="player-2" placeholder="Enter Player 2 Name">
             <button id="submit">Submit</button>
         </div>
         <div id="game" class="hidden">
@@ -60,64 +60,66 @@
     </div>
 
     <script>
-        const submitButton = document.getElementById("submit");
-        const playerInputs = document.getElementById("player-inputs");
-        const game = document.getElementById("game");
-        const message = document.querySelector(".message");
-        const cells = document.querySelectorAll(".cell");
+        document.addEventListener("DOMContentLoaded", () => {
+            const submitButton = document.getElementById("submit");
+            const playerInputs = document.getElementById("player-inputs");
+            const game = document.getElementById("game");
+            const message = document.querySelector(".message");
+            const cells = document.querySelectorAll(".cell");
 
-        let players = [];
-        let currentPlayer = 0;
-        let boardState = ["", "", "", "", "", "", "", "", ""];
+            let players = [];
+            let currentPlayer = 0;
+            let boardState = ["", "", "", "", "", "", "", "", ""];
 
-        submitButton.addEventListener("click", () => {
-            const player1 = document.getElementById("#player1").value;
-            const player2 = document.getElementById("#player2").value;
-            if (player1 && player2) {
-                players = [player1, player2];
-                currentPlayer = 0;
-                message.textContent = `${players[currentPlayer]}, you're up!`;
-                playerInputs.classList.add("hidden");
-                game.classList.remove("hidden");
-            }
-        });
+            submitButton.addEventListener("click", () => {
+                const player1 = document.getElementById("player-1").value.trim();
+                const player2 = document.getElementById("player-2").value.trim();
+                if (player1 && player2) {
+                    players = [player1, player2];
+                    currentPlayer = 0;
+                    message.textContent = `${players[currentPlayer]}, you're up!`;
+                    playerInputs.classList.add("hidden");
+                    game.classList.remove("hidden");
+                }
+            });
 
-        function checkWinner() {
-            const winPatterns = [
-                [0, 1, 2], [3, 4, 5], [6, 7, 8],
-                [0, 3, 6], [1, 4, 7], [2, 5, 8],
-                [0, 4, 8], [2, 4, 6]
-            ];
+            function checkWinner() {
+                const winPatterns = [
+                    [0, 1, 2], [3, 4, 5], [6, 7, 8],
+                    [0, 3, 6], [1, 4, 7], [2, 5, 8],
+                    [0, 4, 8], [2, 4, 6]
+                ];
 
-            for (let pattern of winPatterns) {
-                const [a, b, c] = pattern;
-                if (boardState[a] && boardState[a] === boardState[b] && boardState[a] === boardState[c]) {
-                    message.textContent = `${players[currentPlayer]} congratulations, you won!`;
-                    cells.forEach(cell => cell.removeEventListener("click", handleClick));
+                for (let pattern of winPatterns) {
+                    const [a, b, c] = pattern;
+                    if (boardState[a] && boardState[a] === boardState[b] && boardState[a] === boardState[c]) {
+                        message.textContent = `${players[currentPlayer]} congratulations, you won!`;
+                        cells.forEach(cell => cell.removeEventListener("click", handleClick));
+                        return true;
+                    }
+                }
+                if (!boardState.includes("")) {
+                    message.textContent = "It's a draw!";
                     return true;
                 }
+                return false;
             }
-            if (!boardState.includes("")) {
-                message.textContent = "It's a draw!";
-                return true;
-            }
-            return false;
-        }
 
-        function handleClick(event) {
-            const cell = event.target;
-            const cellIndex = parseInt(cell.id) - 1;
-            if (boardState[cellIndex] === "") {
-                boardState[cellIndex] = currentPlayer === 0 ? "X" : "O";
-                cell.textContent = boardState[cellIndex];
-                if (!checkWinner()) {
-                    currentPlayer = 1 - currentPlayer;
-                    message.textContent = `${players[currentPlayer]}, you're up!`;
+            function handleClick(event) {
+                const cell = event.target;
+                const cellIndex = parseInt(cell.id) - 1;
+                if (boardState[cellIndex] === "") {
+                    boardState[cellIndex] = currentPlayer === 0 ? "X" : "O";
+                    cell.textContent = boardState[cellIndex];
+                    if (!checkWinner()) {
+                        currentPlayer = 1 - currentPlayer;
+                        message.textContent = `${players[currentPlayer]}, you're up!`;
+                    }
                 }
             }
-        }
 
-        cells.forEach(cell => cell.addEventListener("click", handleClick));
+            cells.forEach(cell => cell.addEventListener("click", handleClick));
+        });
     </script>
 </body>
 </html>
