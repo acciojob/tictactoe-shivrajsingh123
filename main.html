@@ -17,8 +17,8 @@
     <div class="container">
         <h1>Tic Tac Toe</h1>
         <div id="input-form">
-            <input type="text" id="player-1" placeholder="#player1">
-            <input type="text" id="player-2" placeholder="#player2">
+            <input type="text" id="player-1" placeholder="Enter Player 1 Name">
+            <input type="text" id="player-2" placeholder="Enter Player 2 Name">
             <button id="submit">Submit</button>
         </div>
         <div id="game" class="hidden">
@@ -53,19 +53,17 @@
                 const cell = document.createElement("div");
                 cell.classList.add("cell");
                 cell.id = i;
-                cell.addEventListener("click", handleMove);
+                cell.addEventListener("click", handleMove, { once: true });
                 boardDiv.appendChild(cell);
             }
         }
 
         function handleMove(event) {
             const index = event.target.id;
-            if (moves[index]) return;
             moves[index] = currentPlayer === player1 ? "X" : "O";
             event.target.textContent = moves[index];
             if (checkWinner()) {
                 messageDiv.textContent = `${currentPlayer} congratulations you won!`;
-                boardDiv.removeEventListener("click", handleMove);
                 return;
             }
             currentPlayer = currentPlayer === player1 ? player2 : player1;
